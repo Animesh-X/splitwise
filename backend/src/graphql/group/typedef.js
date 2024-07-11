@@ -5,7 +5,7 @@ const typeDefs = `#graphql
         amount: Float!
     }
     type Group {
-        id: Int!
+        id: String!
         name: String! 
         profileImageURL: String
         description: String

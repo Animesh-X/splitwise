@@ -3,9 +3,10 @@ const zlib = require("zlib");
 module.exports = (sequelize, DataTypes) => {
   const Expense = sequelize.define("Expense", {
     id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
+      type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
+        allowNull: false
     },
     title: {
       type: DataTypes.STRING,

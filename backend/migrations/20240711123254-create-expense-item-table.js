@@ -9,28 +9,37 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.createTable('user_friends', {
-      userId: {
-        type: Sequelize.INTEGER,
+    await queryInterface.createTable('expense_item', {
+      expense_id: {
+        type: Sequelize.UUID,
         primaryKey: true,
         references: {
-          model: 'users', // Name of the Users table
+          model: 'expense',
           key: 'id'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
+        allowNull: false
       },
-      friendId: {
-        type: Sequelize.INTEGER,
+      user_id: {
+        type: Sequelize.UUID,
         primaryKey: true,
         references: {
-          model: 'users', // Name of the Users table
+          model: 'users',
           key: 'id'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        allowNull: false
+      },
+      amount_paid: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+      },
+      amount_owed: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
       }
-    });
+    })
   },
 
   async down (queryInterface, Sequelize) {
@@ -40,6 +49,5 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.dropTable('user_friends');
   }
 };

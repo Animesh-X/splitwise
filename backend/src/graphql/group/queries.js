@@ -1,5 +1,5 @@
 const queries = `#graphql
-    getGroup(groupId: Int): Group
+    getGroup(groupId: String): Group
 `;
 
 module.exports = { queries };

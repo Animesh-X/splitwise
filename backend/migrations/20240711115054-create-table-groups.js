@@ -11,9 +11,10 @@ module.exports = {
      */
     await queryInterface.createTable('groups', {
       id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
-        autoIncrement: true,
+        allowNull: false
       },
       name: {
         type: Sequelize.STRING,
@@ -23,12 +24,13 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      createdBy: {
-        type: Sequelize.INTEGER,
+      created_by: {
+        type: Sequelize.UUID,
         allowNull: false,
         references: {
           model: 'users',
-          key: 'id'
+          key: 'id',
+          onUpdate: 'CASCADE'
         },
       },
       image_url: {
@@ -45,5 +47,6 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
+    await queryInterface.dropTable('groups');
   }
 };

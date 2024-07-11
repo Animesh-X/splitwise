@@ -3,9 +3,10 @@ const zlib = require("zlib");
 module.exports = (sequelize, DataTypes) => {
   const Group = sequelize.define("Group", {
     id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
+      type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
+        allowNull: false
     },
     name: {
       type: DataTypes.STRING,
@@ -13,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     description: {
       type: DataTypes.STRING,
+      allowNull: true,
       set(description) {
         if (description) {
           this.setDataValue("description", zlib.deflateSync(description).toString("base64"));
@@ -22,11 +24,15 @@ module.exports = (sequelize, DataTypes) => {
       },
       get() {
         const description = this.getDataValue("description");
-        return zlib.inflateSync(Buffer.from(description, "base64")).toString();
+        if (description) {
+          return zlib.inflateSync(Buffer.from(description, "base64")).toString();
+        }
+        return null;
       }
     },
     createdBy: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
+      field: 'created_by',
       references: {
         model: 'users', // Ensure the model name matches exactly with the User model definition
         key: 'id',

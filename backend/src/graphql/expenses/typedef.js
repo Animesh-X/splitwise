@@ -5,23 +5,23 @@ const typeDefs = `#graphql
         amountOwed: Float!
     }
     type Expense {
-        id: Int!,
+        id: String!,
         title: String!,
         description: String,
-        groupId: Int!,
+        groupId: String!,
         createdByUser: User!,
         transactions: [BalanceMap]!
     }
     input ExpenseInput {
         title: String!
         description: String
-        groupId: Int!
-        createdBy: Int!
+        groupId: String!
+        createdBy: String!
         transactions: [BalanceMapInput]!
     }
 
     input BalanceMapInput {
-        userId: Int!
+        userId: String!
         amountPaid: Float!
         amountOwed: Float!
     }

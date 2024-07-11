@@ -9,10 +9,9 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.createTable('user_groups', {
-      userId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
+    await queryInterface.createTable('user_friends', {
+      user_id: {
+        type: Sequelize.UUID,
         primaryKey: true,
         references: {
           model: 'users', // Name of the Users table
@@ -21,17 +20,16 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      groupId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
+      friend_id: {
+        type: Sequelize.UUID,
         primaryKey: true,
         references: {
-          model: 'groups', // Name of the Groups table
+          model: 'users', // Name of the Users table
           key: 'id'
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
-      },
+      }
     });
   },
 
@@ -42,6 +40,6 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.dropTable('user_groups');
+    await queryInterface.dropTable('user_friends');
   }
 };

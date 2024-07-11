@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
     const ExpenseItem = sequelize.define("ExpenseItem", {
       expenseId: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         field: 'expense_id',
         primaryKey: true,
         references: {
@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
       },
       userId: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         field: 'user_id',
         primaryKey: true,
         references: {
@@ -31,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       amountOwed: {
         type: DataTypes.FLOAT,
         allowNull: false,
+        field: 'amount_owed'
       }
     }, {
       timestamps: false,

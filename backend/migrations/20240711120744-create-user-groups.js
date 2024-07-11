@@ -9,43 +9,30 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.createTable('payment_graph', {
-      group_id: {
-        type: Sequelize.INTEGER,
+    await queryInterface.createTable('user_groups', {
+      user_id: {
+        type: Sequelize.UUID,
         allowNull: false,
         primaryKey: true,
         references: {
-          model: 'groups',
+          model: 'users', // Name of the Users table
           key: 'id'
         },
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
-      user_id: {
-        type: Sequelize.INTEGER,
+      group_id: {
+        type: Sequelize.UUID,
         allowNull: false,
         primaryKey: true,
         references: {
-          model: 'users',
-          key: 'id',
+          model: 'groups', // Name of the Groups table
+          key: 'id'
         },
         onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
-      owes_from: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        primaryKey: true,
-        references: {
-          model: 'users',
-          key: 'id',
-        },
-        onUpdate: 'CASCADE',
-      },
-      amount: {
-        type: Sequelize.FLOAT,
-        allowNull: false
-      }
-    })
+    });
   },
 
   async down (queryInterface, Sequelize) {
@@ -55,6 +42,6 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.dropTable('payment_graph');
+    await queryInterface.dropTable('user_groups');
   }
 };

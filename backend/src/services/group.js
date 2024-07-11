@@ -51,26 +51,42 @@ class GroupService {
       //   return null; // Group not found
       // }
       logger.info(`Fetching Users of Group`);
-      const data = [];
+      // const data = [];
       // Todo.  Use sequelize model to query
-      const [results, metadata] = await db.sequelize.query(
-        `
-        SELECT u.id, u.first_name AS firstName, u.last_name AS lastName, u.email, u.image_url AS profileImageURL
-        FROM users u
-        INNER JOIN user_groups ug ON u.id = ug.userId
-        INNER JOIN \`groups\` g ON g.id = ug.groupId
-        WHERE g.id = ?
-        `,
-        {
-          replacements: [groupId],
-          type: db.Sequelize.QueryTypes.SELECT
-        }
-      );
-      // console.log(results,Object.keys(results).length);
-      // return Object.keys(results).length ? results : [];
-      data.push(results);
+      // const [results, metadata] = await db.sequelize.query(
+      //   `
+      //   SELECT u.id, u.first_name AS firstName, u.last_name AS lastName, u.email, u.image_url AS profileImageURL
+      //   FROM users u
+      //   INNER JOIN user_groups ug ON u.id = ug.userId
+      //   INNER JOIN \`groups\` g ON g.id = ug.groupId
+      //   WHERE g.id = ?
+      //   `,
+      //   {
+      //     replacements: [groupId],
+      //     type: db.Sequelize.QueryTypes.SELECT
+      //   }
+      // );
+      // // console.log(results,Object.keys(results).length);
+      // // return Object.keys(results).length ? results : [];
+      // data.push(results);
+      const group = await db.Group.findByPk(groupId);
+      if (!group) {
+        throw new Error('Group not found');
+      }
+
+      const users = await group.getUsers(); // Assuming you have defined this association properly
+
+      // Optionally, format the result to match your expected output
+      const formattedUsers = users.map(user => ({
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        profileImageURL: user.profileImageURL
+      }));
+
       logger.info(`Fetched Users of Group successfully!`);
-      return data;
+      return formattedUsers;
     } catch (error) {
       throwCustomError("Error fetching users for group", ErrorTypes.BAD_USER_INPUT, error);
     }

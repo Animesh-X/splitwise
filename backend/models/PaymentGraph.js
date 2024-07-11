@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
     const PaymentGraph = sequelize.define('PaymentGraph', {
       groupId: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         allowNull: false,
         field: 'group_id',
         primaryKey: true,
@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       userId: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         allowNull: false,
         primaryKey: true,
         field: 'user_id',
@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       owesFrom: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         allowNull: false,
         primaryKey: true,
         field: 'owes_from',

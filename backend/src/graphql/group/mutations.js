@@ -1,6 +1,6 @@
 const mutations = `#graphql
-    createGroup(name: String!, description: String, imageURL: String, userId: Int!): Group
-    addMemberToGroup(userId: Int!, groupId: Int!): String
+    createGroup(name: String!, description: String, imageURL: String, userId: String!): Group
+    addMemberToGroup(userId: String!, groupId: String!): String
 `;
 
 module.exports = { 
