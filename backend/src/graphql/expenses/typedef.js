@@ -9,7 +9,7 @@ const typeDefs = `#graphql
         title: String!,
         description: String,
         groupId: Int!,
-        createdBy: Int!,
+        createdByUser: User!,
         transactions: [BalanceMap]!
     }
     input ExpenseInput {

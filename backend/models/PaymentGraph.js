@@ -45,8 +45,8 @@ module.exports = (sequelize, DataTypes) => {
   
     PaymentGraph.associate = function(models) {
       PaymentGraph.belongsTo(models.Group, { foreignKey: 'groupId' });
-      PaymentGraph.belongsTo(models.User, { foreignKey: 'userId' });
-      PaymentGraph.belongsTo(models.User, { foreignKey: 'owesFrom' });
+      PaymentGraph.belongsTo(models.User, { foreignKey: 'userId' , as: 'user'});
+      PaymentGraph.belongsTo(models.User, { foreignKey: 'owesFrom', as: 'oweFrom'});
     };
 
     return PaymentGraph;

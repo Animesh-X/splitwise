@@ -31,11 +31,17 @@ class ExpenseService {
     
             const expenseWithTransactions = await db.Expense.findOne({
                 where: { id: newExpense.id },
-                include: [{
-                  model: db.ExpenseItem,
-                  as: 'transactions', // Ensure alias matches GraphQL schema
-                  include: [db.User]
-                }]
+                include: [
+                    {
+                        model: db.ExpenseItem,
+                        as: 'transactions', // Ensure alias matches GraphQL schema
+                        include: [db.User]
+                    },
+                    {
+                        model: db.User,
+                        as: 'createdByUser',
+                    }
+                ]
             });
     
             logger.info(`Expense Added to group - ${groupId}`);

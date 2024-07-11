@@ -56,7 +56,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Expense.associate = function(models) {
     Expense.belongsTo(models.Group, { foreignKey: 'groupId' });
-    Expense.belongsTo(models.User,{ foreignKey: 'createdBy'});
+    Expense.belongsTo(models.User,{ foreignKey: 'createdBy', as: 'createdByUser'});
     Expense.hasMany(models.ExpenseItem, { foreignKey: 'expenseId', as: 'transactions' });
   };
 

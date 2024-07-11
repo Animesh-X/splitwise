@@ -7,8 +7,15 @@ const group = {
     },
     members: async (group) => {
         const members = await GroupService.getUsersByGroupId(group.id);
-        console.log(`hello${members}`);
         return members;
+    },
+    expenses: async (group) => {
+        const expenses = await GroupService.getExpensesByGroupId(group.id);
+        return expenses;
+    },
+    payments: async (group) => {
+        const payments = await GroupService.getPaymentsGraphByGroupId(group.id);
+        return payments;
     }
 };
 

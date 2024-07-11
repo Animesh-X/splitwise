@@ -103,6 +103,51 @@ class GroupService {
     }
   }
 
+  static async getExpensesByGroupId(groupId) {
+    logger.info(`Fetching expenses for group with id - ${groupId}`);
+    try {
+      const expenses = await db.Expense.findAll({
+        where: { groupId },
+        include: [
+          {
+              model: db.ExpenseItem,
+              as: 'transactions', 
+              include: [db.User]
+          },
+          {
+              model: db.User,
+              as: 'createdByUser',
+          }
+      ]
+      });
+      return expenses;
+    } catch (error) {
+      throwCustomError(`Failed to fetch expenses for group with id - ${groupId}`, ErrorTypes.BAD_REQUEST, error);
+    }
+  }
+
+  static async getPaymentsGraphByGroupId (groupId) {
+    logger.info(`Fetching payments graph for group with id - ${groupId}`);
+    try {
+      const paymentGraph = await db.PaymentGraph.findAll({
+        where: { groupId },
+        include: [
+          {
+            model: db.User,
+            as: 'user'
+          },
+          {
+            model: db.User,
+            as: 'oweFrom'
+          }
+        ]
+      });
+      return paymentGraph;
+    } catch (error) {
+      logger.error(`Failed to fetch payments graph for group with id - ${groupId}`, ErrorTypes.BAD_REQUEST, error);
+    }
+  }
+
 }
 
 module.exports = GroupService;
