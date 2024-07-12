@@ -10,6 +10,21 @@ class UserService {
       return user;
   }
 
+  static async decodeJWTToken(token) {
+    try {
+      const decodedToken = jwt.verify(token, process.env.SECRET);
+      return decodedToken;
+    } catch (error) {
+      // throwCustomError("Invalid Token", ErrorTypes.UNAUTHORIZED, error);
+      logger.error(`Invalid Token`, ErrorTypes.UNAUTHORIZED, error);
+    }
+  }
+
+  static async getUser(token){
+    const user = await UserService.#getUserById(token.id);
+    return user;
+  }
+
   static async getUserByEmail(email) {
     const user = await db.User.findOne({
       where: { email: email },
@@ -46,7 +61,7 @@ class UserService {
     }
   }
 
-  static async getUserToken(payload) {
+  static async #getUserToken(payload) {
     const { email, password } = payload;
 
     const user = await UserService.getUserByEmail(email);
@@ -58,7 +73,7 @@ class UserService {
     const passwordCorrect = await bcrypt.compare(password, user.password);
 
     if (!passwordCorrect) {
-      throwCustomError("Invalid Password!", ErrorTypes.UNAUTHORIZED);
+      throwCustomError("Invalid Password!", ErrorTypes.BAD_USER_INPUT);
     }
 
     const userPayload = {
@@ -66,9 +81,9 @@ class UserService {
       email: user.email,
     };
 
-    const token = jwt.sign(userPayload, process.env.SECRET);
+    const token = jwt.sign(userPayload, process.env.SECRET, { expiresIn: '1h' });
 
-    return token;
+    return {token, user};
   }
 
   static async addFriend(payload) {
@@ -86,6 +101,10 @@ class UserService {
         userId,
         friendId
     });
+    await db.UserFriend.create({
+      userId: friendId,
+      friendId: userId
+    })
     return "Added Friend successfully";
   }
 
@@ -97,11 +116,16 @@ class UserService {
       if (!user) {
         throwCustomError("User not Found!", ErrorTypes.BAD_USER_INPUT);
       }
-      const friends = await user.getFriends(); // This is where the generated method is used
+      const friends = await user.getFriends(); 
       return friends;
     } catch (error) {
       throwCustomError("Error fetching friends", ErrorTypes.INTERNAL_SERVER_ERROR, error);
     }
+  }
+
+  static async login (payload) {
+    const AuthPayload = await UserService.#getUserToken(payload);
+    return AuthPayload;
   }
 }
 
