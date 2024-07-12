@@ -127,6 +127,17 @@ class UserService {
     const AuthPayload = await UserService.#getUserToken(payload);
     return AuthPayload;
   }
+
+  static async getGroupsOfUser (userId) {
+    logger.info(`Fetching groups of user with userId - ${userId}`);
+    try {
+      const user = await db.User.findByPk(userId);
+      const groups = await user.getGroups();
+      return groups;
+    } catch (error) {
+      logger.error(`Error fetching groups of user with userId - ${userId}`,ErrorTypes.BAD_USER_INPUT, error);
+    }
+  }
 }
 
 module.exports = UserService;
