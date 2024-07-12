@@ -1,4 +1,5 @@
 const GroupService = require("../../services/group");
+const { throwCustomError, ErrorTypes } = require("../../utils/error");
 
 const group = {
     createdBy: async (group) => {
@@ -20,18 +21,27 @@ const group = {
 };
 
 const queries = {
-    getGroup: async(_, payload) => {
+    getGroup: async(_, payload, context) => {
+        if(!context || !context.user){
+            throwCustomError(`Unauthorised`, ErrorTypes.UNAUTHORIZED);
+        }
         const Group = await GroupService.getGroup(payload);
         return Group;
     }
 };
 
 const mutations = {
-    createGroup: async(_, payload) => {
+    createGroup: async(_, payload, context) => {
+        if(!context || !context.user){
+            throwCustomError(`Unauthorised`, ErrorTypes.UNAUTHORIZED);
+        }
         const group = await GroupService.createGroup(payload);
         return group;
     },
-    addMemberToGroup: async(_, payload) => {
+    addMemberToGroup: async(_, payload, context) => {
+        if(!context || !context.user){
+            throwCustomError(`Unauthorised`, ErrorTypes.UNAUTHORIZED);
+        }
         const result = await GroupService.addMemberToGroup(payload);
         return result;
     }

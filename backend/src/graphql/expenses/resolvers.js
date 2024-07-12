@@ -20,7 +20,10 @@ const queries = {
 }
 
 const mutations = {
-    createExpense: async (_, {input}) => {
+    createExpense: async (_, {input}, context) => {
+        if(!context || !context.user){
+            throwCustomError(`Unauthorised`, ErrorTypes.UNAUTHORIZED);
+        }
         const expense = await ExpenseService.addExpense(input);
         return expense;
     }
