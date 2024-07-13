@@ -67,13 +67,13 @@ class UserService {
     const user = await UserService.getUserByEmail(email);
 
     if (!user) {
-      throwCustomError("User not Found!", ErrorTypes.BAD_USER_INPUT);
+      throwCustomError("User not Found!", ErrorTypes.UNAUTHORIZED);
     }
 
     const passwordCorrect = await bcrypt.compare(password, user.password);
 
     if (!passwordCorrect) {
-      throwCustomError("Invalid Password!", ErrorTypes.BAD_USER_INPUT);
+      throwCustomError("Invalid Password!", ErrorTypes.UNAUTHORIZED);
     }
 
     const userPayload = {

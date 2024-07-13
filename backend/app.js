@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const { expressMiddleware } = require("@apollo/server/express4");
 const createApolloGraphqlServer = require('./src/graphql/index');
 const config = require("./src/utils/config");
@@ -9,6 +10,7 @@ const UserService = require("./src/services/user");
 const init = async () => {
     const app = express();
     app.use(express.json());
+    app.use(cors());
 
     app.get("/", (req, res) =>{
         res.json({ message: "server is up and running!!!" });
