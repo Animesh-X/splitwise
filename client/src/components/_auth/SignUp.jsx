@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { gql, useMutation } from '@apollo/client';
-import NavBar from "../NavBar";
+import LoginNavBar from "../LoginNavBar";
 
 const SIGNUP = gql`
     mutation signup($firstName: String!,$lastName: String, $email: String!, $password: String!) {
@@ -46,7 +46,7 @@ export default function SignUp() {
 
     return (
         <div>
-          <NavBar />
+          <LoginNavBar />
           <div className="login-form-container">
             <form className="login-form" onSubmit={handleSubmit}>
               <h2>Sign Up</h2>

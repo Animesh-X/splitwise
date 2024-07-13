@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { gql, useMutation } from '@apollo/client';
 import { useNavigate } from "react-router-dom";
-import NavBar from "../NavBar";
+import LoginNavBar from "../LoginNavBar";
 
 const LOGIN = gql`
   mutation Login($email: String!, $password: String!) {
@@ -48,7 +48,7 @@ export default function Login() {
 
   return (
     <div>
-      <NavBar />
+      <LoginNavBar />
       <div className="login-form-container">
         <form className="login-form" onSubmit={handleSubmit}>
           <h2>Log in</h2>

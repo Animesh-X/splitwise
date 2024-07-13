@@ -1,14 +1,34 @@
-import { useNavigate } from "react-router-dom";
-export default function NavBar () {
-    const navigate = useNavigate();
+import { useLoaderData, useNavigate } from "react-router-dom";
+import { useState } from "react";
+
+export default function NavBar() {
+  const user = useLoaderData();
+  console.log(user.user.user.firstName);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("splitwiseUser");
+    navigate("/login");
+  };
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
 
   return (
-    <div className="nav-container">
-      <div>Splitwise</div>
-      <div className="button-container">
-        <button onClick={() => navigate(`/login`)}>Log in</button>
-        <button onClick={() => navigate(`/signup`)}>Sign Up</button>
+    <div className="navbar">
+      <div className="navbar-left">Splitmate</div>
+      <div className="navbar-right">
+        <div className="user-info" onClick={toggleDropdown}>
+          {user.user.user.firstName}
+        </div>
+        {dropdownOpen && (
+          <div className="dropdown-menu">
+            <button onClick={handleLogout}>Logout</button>
+          </div>
+        )}
       </div>
     </div>
-  )
+  );
 }

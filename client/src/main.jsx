@@ -7,6 +7,8 @@ import Login from './components/_auth/Login.jsx';
 import DashBoard from './components/DashBoard.jsx';
 import './index.css'
 import SignUp from './components/_auth/SignUp.jsx';
+import userLoader from './loaders/userLoader.js';
+import userLoginLoader from './loaders/userLoginLoader.js';
 
 const router = createBrowserRouter([
   {
@@ -15,15 +17,18 @@ const router = createBrowserRouter([
   },
   {
     path: "/signup",
-    element: <SignUp />
+    element: <SignUp />,
+    loader: userLoginLoader
   },
   {
     path: "/login",
-    element: <Login />
+    element: <Login />,
+    loader: userLoginLoader,
   },
   {
     path: "/dashboard",
-    element: <DashBoard />
+    element: <DashBoard />,
+    loader: userLoader,
   },
 ]);
 
