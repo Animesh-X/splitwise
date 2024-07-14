@@ -1,14 +1,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client"
+import { ApolloProvider } from "@apollo/client";
+import client from './apolloClient.js';
 import App from './App.jsx'
 import Login from './components/_auth/Login.jsx';
 import DashBoard from './components/DashBoard.jsx';
-import './index.css'
 import SignUp from './components/_auth/SignUp.jsx';
 import userLoader from './loaders/userLoader.js';
 import userLoginLoader from './loaders/userLoginLoader.js';
+import './index.css'
 
 const router = createBrowserRouter([
   {
@@ -31,11 +32,6 @@ const router = createBrowserRouter([
     loader: userLoader,
   },
 ]);
-
-const client = new ApolloClient({
-  uri: "http://localhost:8000/graphql",
-  cache: new InMemoryCache(),
-});
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

@@ -107,3 +107,101 @@
 .dropdown-menu button:hover {
   background-color: #f0f0f0;
 }
+
+
+/* Assuming your CSS file or styles */
+.dashboard-container {
+  margin: 20px auto; /* Center aligns the container */
+  width: 80%; /* Adjust width as needed */
+  padding: 20px;
+}
+
+.add-group-button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #1AC29F;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.add-group-button:hover {
+  background-color: #0056b3;
+}
+
+.groups-list {
+  margin-top: 20px; /* Adds space between Add Group button and groups list */
+}
+
+.group {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.group h3 {
+  margin: 0;
+}
+
+.group-description {
+  font-size: 14px;
+  color: #666; /* Lighter color for group description */
+}
+
+.created-by {
+  font-style: italic;
+  color: #999; /* Lighter color for created by */
+}
+
+
+/* Modal styling */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 400px;
+  max-width: 80%;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+}
+
+.modal-content label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.modal-content button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #1AC29F;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.modal-content button:hover {
+  background-color: #0056b3;
+}

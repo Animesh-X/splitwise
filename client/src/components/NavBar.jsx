@@ -3,7 +3,6 @@ import { useState } from "react";
 
 export default function NavBar() {
   const user = useLoaderData();
-  console.log(user.user.user.firstName);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
