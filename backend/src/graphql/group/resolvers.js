@@ -25,7 +25,12 @@ const queries = {
         if(!context || !context.user){
             throwCustomError(`Unauthorised`, ErrorTypes.UNAUTHORIZED);
         }
+        const isMember = await GroupService.isUserMemberOfGroup(context.user.id, payload.groupId);
+        if (!isMember) {
+            throwCustomError(`User is not a member of the group`, ErrorTypes.FORBIDDEN);
+        }
         const Group = await GroupService.getGroup(payload);
+        console.log(Group);
         return Group;
     }
 };

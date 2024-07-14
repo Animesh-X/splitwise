@@ -164,6 +164,16 @@ class GroupService {
     }
   }
 
+  static async isUserMemberOfGroup(userId, groupId) {
+    const member = await db.UserGroup.findOne({
+      where: {
+          userId,
+          groupId
+      }
+    });
+    return !!member;
+  }
+
 }
 
 module.exports = GroupService;
