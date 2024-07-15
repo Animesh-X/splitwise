@@ -10,6 +10,7 @@ import SignUp from './components/_auth/SignUp.jsx';
 import userLoader from './loaders/userLoader.js';
 import userLoginLoader from './loaders/userLoginLoader.js';
 import './index.css'
+import Group from './components/Group.jsx';
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,11 @@ const router = createBrowserRouter([
     element: <DashBoard />,
     loader: userLoader,
   },
+  {
+    path: "/groups/:groupId",
+    element: <Group />,
+    loader: userLoader
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

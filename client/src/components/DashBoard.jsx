@@ -2,63 +2,14 @@ import { gql, useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import NavBar from "./NavBar";
-
-const GET_GROUPS = gql`
-  query GetGroups {
-    getGroups {
-      id
-      name
-      description
-      createdBy {
-        id
-        firstName
-        lastName
-      }
-    }
-  }
-`;
-
-const CREATE_GROUP = gql`
-  mutation CreateGroup($name: String!, $description: String, $userId: String!) {
-    createGroup(name: $name, description: $description, userId: $userId) {
-      id
-      name
-      description
-    }
-  }
-`;
-
-const GET_FRIENDS = gql`
-  query GetFriends {
-    getFriends {
-      id
-      firstName
-      lastName
-      email
-    }
-  }
-`;
-
-const GET_USER_BY_EMAIL = gql`
-  query GetUserByEmail($email: String!) {
-    getUserByEmail(email: $email) {
-      id
-      firstName
-      lastName
-    }
-  }
-`;
-
-const ADD_FRIEND = gql`
-  mutation AddFriend($userId: String!, $friendId: String!) {
-    addFriend(userId: $userId, friendId: $friendId)
-  }
-`;
+import { GET_GROUPS } from '../graphql/queries/getGroups';
+import { GET_FRIENDS } from '../graphql/queries/getFriends';
+import { GET_USER_BY_EMAIL } from '../graphql/queries/getUserByEmail';
+import { CREATE_GROUP } from '../graphql/mutations/createGroup';
+import { ADD_FRIEND } from '../graphql/mutations/addFriend';
 
 export default function DashBoard() {
   const user = useLoaderData();
-  const [groupData, setGroupData] = useState([]);
-  const [friendData, setFriendData] = useState([]);
   const [isGroupModalOpen, setIsGroupModalOpen] = useState(false);
   const [isFriendModalOpen, setIsFriendModalOpen] = useState(false);
   const [newGroupName, setNewGroupName] = useState("");
@@ -70,18 +21,6 @@ export default function DashBoard() {
   const [getUserByEmail, { data: userData, loading: userLoading, error: userError }] = useLazyQuery(GET_USER_BY_EMAIL);
   const [addFriend] = useMutation(ADD_FRIEND);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (groupDataResult) {
-      setGroupData(groupDataResult.getGroups);
-    }
-  }, [groupDataResult]);
-
-  useEffect(() => {
-    if (friendDataResult) {
-      setFriendData(friendDataResult.getFriends);
-    }
-  }, [friendDataResult]);
 
   useEffect(() => {
     if (userData && userData.getUserByEmail) {
@@ -132,14 +71,17 @@ export default function DashBoard() {
   if (friendError) return <p>Error: {friendError.message}</p>;
   if (userError) return <p>Error: {userError.message}</p>;
 
+  const groups = groupDataResult.getGroups;
+  const friends = friendDataResult.getFriends;
+
   return (
     <div>
       <NavBar />
       <div className="dashboard-container">
         <button className="add-group-button" onClick={handleAddGroup}>Create Group</button>
         <div className="groups-list">
-          {groupData.map((group) => (
-            <div key={group.id} className="group" onClick={() => navigate(`/groups/${group.id}`)}>
+          {groups.map((group) => (
+            <div key={group.id} className="group" onClick={() => navigate(`/groups/${group.id}`, { state: { groupId: group.id } })}>
               <h3>{group.name}</h3>
               <p className="group-description">{group.description}</p>
               <p className="created-by">Created by: {group.createdBy.firstName}</p>
@@ -148,7 +90,7 @@ export default function DashBoard() {
         </div>
         <button className="add-friend-button" onClick={handleAddFriendClick}>Add Friend</button>
         <div className="friends-list">
-          {friendData.map((friend) => (
+          {friends.map((friend) => (
             <div key={friend.id} className="friend">
               <h3>{friend.firstName} {friend.lastName}</h3>
               <p className="group-description">{friend.email}</p>
