@@ -1,4 +1,4 @@
-import { gql, useQuery, useMutation } from '@apollo/client';
+import { gql, useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import NavBar from "./NavBar";
@@ -28,36 +28,84 @@ const CREATE_GROUP = gql`
   }
 `;
 
+const GET_FRIENDS = gql`
+  query GetFriends {
+    getFriends {
+      id
+      firstName
+      lastName
+      email
+    }
+  }
+`;
+
+const GET_USER_BY_EMAIL = gql`
+  query GetUserByEmail($email: String!) {
+    getUserByEmail(email: $email) {
+      id
+      firstName
+      lastName
+    }
+  }
+`;
+
+const ADD_FRIEND = gql`
+  mutation AddFriend($userId: String!, $friendId: String!) {
+    addFriend(userId: $userId, friendId: $friendId)
+  }
+`;
+
 export default function DashBoard() {
   const user = useLoaderData();
   const [groupData, setGroupData] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [friendData, setFriendData] = useState([]);
+  const [isGroupModalOpen, setIsGroupModalOpen] = useState(false);
+  const [isFriendModalOpen, setIsFriendModalOpen] = useState(false);
   const [newGroupName, setNewGroupName] = useState("");
   const [newGroupDescription, setNewGroupDescription] = useState("");
-  const { data, loading, error } = useQuery(GET_GROUPS, {
-    pollInterval: 1000
-  });
+  const [newFriendEmail, setNewFriendEmail] = useState("");
+  const { data: groupDataResult, loading: groupLoading, error: groupError } = useQuery(GET_GROUPS);
+  const { data: friendDataResult, loading: friendLoading, error: friendError } = useQuery(GET_FRIENDS);
   const [createGroup] = useMutation(CREATE_GROUP);
+  const [getUserByEmail, { data: userData, loading: userLoading, error: userError }] = useLazyQuery(GET_USER_BY_EMAIL);
+  const [addFriend] = useMutation(ADD_FRIEND);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (data) {
-      setGroupData(data.getGroups);
+    if (groupDataResult) {
+      setGroupData(groupDataResult.getGroups);
     }
-  }, [data]);
+  }, [groupDataResult]);
+
+  useEffect(() => {
+    if (friendDataResult) {
+      setFriendData(friendDataResult.getFriends);
+    }
+  }, [friendDataResult]);
+
+  useEffect(() => {
+    if (userData && userData.getUserByEmail) {
+      handleAddFriend(user.user.user.id, userData.getUserByEmail.id);
+    }
+  }, [userData]);
 
   const handleAddGroup = () => {
-    setIsModalOpen(true);
+    setIsGroupModalOpen(true);
+  };
+
+  const handleAddFriendClick = () => {
+    setIsFriendModalOpen(true);
   };
 
   const handleModalClose = () => {
-    setIsModalOpen(false);
+    setIsGroupModalOpen(false);
+    setIsFriendModalOpen(false);
   };
 
   const handleCreateGroup = async () => {
     try {
-      await createGroup({ variables: { name: newGroupName, description: newGroupDescription, userId: user.user.user.id} });
-      setIsModalOpen(false);
+      await createGroup({ variables: { name: newGroupName, description: newGroupDescription, userId: user.user.user.id } });
+      setIsGroupModalOpen(false);
       setNewGroupName("");
       setNewGroupDescription("");
     } catch (error) {
@@ -65,8 +113,24 @@ export default function DashBoard() {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  const handleAddFriend = async (userId, friendId) => {
+    try {
+      await addFriend({ variables: { userId, friendId } });
+      setIsFriendModalOpen(false);
+      setNewFriendEmail("");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleFindFriend = async () => {
+    getUserByEmail({ variables: { email: newFriendEmail } });
+  };
+
+  if (groupLoading || friendLoading || userLoading) return <p>Loading...</p>;
+  if (groupError) return <p>Error: {groupError.message}</p>;
+  if (friendError) return <p>Error: {friendError.message}</p>;
+  if (userError) return <p>Error: {userError.message}</p>;
 
   return (
     <div>
@@ -75,16 +139,25 @@ export default function DashBoard() {
         <button className="add-group-button" onClick={handleAddGroup}>Create Group</button>
         <div className="groups-list">
           {groupData.map((group) => (
-            <div key={group.id} className="group">
+            <div key={group.id} className="group" onClick={() => navigate(`/groups/${group.id}`)}>
               <h3>{group.name}</h3>
               <p className="group-description">{group.description}</p>
               <p className="created-by">Created by: {group.createdBy.firstName}</p>
             </div>
           ))}
         </div>
+        <button className="add-friend-button" onClick={handleAddFriendClick}>Add Friend</button>
+        <div className="friends-list">
+          {friendData.map((friend) => (
+            <div key={friend.id} className="friend">
+              <h3>{friend.firstName} {friend.lastName}</h3>
+              <p className="group-description">{friend.email}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
-      {isModalOpen && (
+      {isGroupModalOpen && (
         <div className="modal">
           <div className="modal-content">
             <h2>Create Group</h2>
@@ -105,6 +178,25 @@ export default function DashBoard() {
               />
             </label>
             <button onClick={handleCreateGroup}>Create</button>
+            <button onClick={handleModalClose}>Cancel</button>
+          </div>
+        </div>
+      )}
+
+      {isFriendModalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>Add Friend</h2>
+            <label>
+              Email:
+              <input
+                type="email"
+                value={newFriendEmail}
+                onChange={(e) => setNewFriendEmail(e.target.value)}
+                required
+              />
+            </label>
+            <button onClick={handleFindFriend}>Add</button>
             <button onClick={handleModalClose}>Cancel</button>
           </div>
         </div>

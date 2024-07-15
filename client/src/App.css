@@ -205,3 +205,51 @@
 .modal-content button:hover {
   background-color: #0056b3;
 }
+
+/* Dashboard styling */
+.dashboard-container {
+  margin: 20px auto;
+  width: 80%;
+  padding: 20px;
+}
+
+.add-group-button, .add-friend-button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #1AC29F;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.add-group-button:hover, .add-friend-button:hover {
+  background-color: #0056b3;
+}
+
+.groups-list, .friends-list {
+  margin-top: 20px;
+}
+
+.group, .friend {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.group h3, .friend h3 {
+  margin: 0;
+}
+
+.group-description {
+  font-size: 14px;
+  color: #666;
+}
+
+.created-by {
+  font-style: italic;
+  color: #999;
+}
+.group:hover{
+  cursor: pointer;
+}
