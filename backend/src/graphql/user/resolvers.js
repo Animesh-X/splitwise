@@ -19,7 +19,7 @@ const queries =  {
         if(!context || !context.user){
             throwCustomError(`Unauthorised`, ErrorTypes.UNAUTHORIZED);
         }
-        const friends = await UserService.getFriends(payload);
+        const friends = await UserService.getFriends(context.user.id);
         return friends;
     },
     getGroups: async(_, payload, context) => {

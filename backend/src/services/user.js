@@ -108,8 +108,7 @@ class UserService {
     return "Added Friend successfully";
   }
 
-  static async getFriends(payload) {
-    const { userId } = payload;
+  static async getFriends(userId) {
     logger.info(`Getting friends of user - ${userId}`);
     try {
       const user = await UserService.#getUserById(userId);

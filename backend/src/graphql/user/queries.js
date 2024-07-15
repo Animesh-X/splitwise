@@ -2,7 +2,7 @@ const queries = `#graphql
     getUser: User
     getUserByEmail(email: String!): User
     getGroups: [Group]
-    getFriends(userId: String!): [User] 
+    getFriends: [User] 
 `;
 
 module.exports = { queries };

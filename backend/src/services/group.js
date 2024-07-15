@@ -38,45 +38,13 @@ class GroupService {
 
   static async getUsersByGroupId(groupId) {
     try {
-      // const groupWithUsers = await db.Group.findByPk(groupId, {
-      //   include: {
-      //     model: db.User,
-      //     through: { attributes: [] } // This ensures only the User fields are returned, not the UserGroup join table fields
-      //   }
-      // });
-  
-      // if (groupWithUsers) {
-      //   return groupWithUsers.Users; // Returns the list of users associated with the group
-      // } else {
-      //   return null; // Group not found
-      // }
       logger.info(`Fetching Users of Group`);
-      // const data = [];
-      // Todo.  Use sequelize model to query
-      // const [results, metadata] = await db.sequelize.query(
-      //   `
-      //   SELECT u.id, u.first_name AS firstName, u.last_name AS lastName, u.email, u.image_url AS profileImageURL
-      //   FROM users u
-      //   INNER JOIN user_groups ug ON u.id = ug.userId
-      //   INNER JOIN \`groups\` g ON g.id = ug.groupId
-      //   WHERE g.id = ?
-      //   `,
-      //   {
-      //     replacements: [groupId],
-      //     type: db.Sequelize.QueryTypes.SELECT
-      //   }
-      // );
-      // // console.log(results,Object.keys(results).length);
-      // // return Object.keys(results).length ? results : [];
-      // data.push(results);
       const group = await db.Group.findByPk(groupId);
       if (!group) {
         throw new Error('Group not found');
       }
 
-      const users = await group.getUsers(); // Assuming you have defined this association properly
-
-      // Optionally, format the result to match your expected output
+      const users = await group.getUsers(); 
       const formattedUsers = users.map(user => ({
         id: user.id,
         firstName: user.firstName,
