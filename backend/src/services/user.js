@@ -118,7 +118,7 @@ class UserService {
       const friends = await user.getFriends(); 
       return friends;
     } catch (error) {
-      throwCustomError("Error fetching friends", ErrorTypes.INTERNAL_SERVER_ERROR, error);
+      throwCustomError("Error fetching friends", ErrorTypes.BAD_USER_INPUT, error);
     }
   }
 
