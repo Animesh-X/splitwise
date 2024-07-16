@@ -49,3 +49,31 @@
     margin-bottom: 5px;
   }
   
+  .add-expense-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .add-expense-form label {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+  
+  .transaction-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .transaction-form label {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .add-expense-button-container {
+    display: flex;
+    gap: 10px;
+  }

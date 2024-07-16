@@ -44,6 +44,7 @@ export default function DashBoard() {
   const handleCreateGroup = async () => {
     try {
       await createGroup({ variables: { name: newGroupName, description: newGroupDescription, userId: user.user.user.id } });
+      alert(`Group added successfully!`)
       setIsGroupModalOpen(false);
       setNewGroupName("");
       setNewGroupDescription("");
@@ -55,6 +56,7 @@ export default function DashBoard() {
   const handleAddFriend = async (userId, friendId) => {
     try {
       await addFriend({ variables: { userId, friendId } });
+      alert(`Friend added successfully!`)
       setIsFriendModalOpen(false);
       setNewFriendEmail("");
     } catch (error) {
