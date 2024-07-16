@@ -10,6 +10,17 @@ class ExpenseService {
 
         logger.info(`Adding new expense to group - ${groupId}`);
 
+        let totalAmountPaid = 0;
+        let totalAmountOwed = 0;
+        transactions.forEach((transaction) => {
+            totalAmountPaid += transaction.amountPaid;
+            totalAmountOwed += transaction.amountOwed;
+        });
+
+        if(totalAmountOwed!=totalAmountPaid) {
+            throwCustomError(`Failed to create expense in group - ${groupId}`, ErrorTypes.BAD_USER_INPUT);
+        }
+
         try {
             const newExpense = await db.Expense.create({
                 title,
