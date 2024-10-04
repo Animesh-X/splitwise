@@ -89,6 +89,7 @@ class GroupService {
 
   static async getExpensesByGroupId(groupId) {
     logger.info(`Fetching expenses for group with id - ${groupId}`);
+    
     try {
       const expenses = await db.Expense.findAll({
         where: { groupId },
@@ -104,6 +105,7 @@ class GroupService {
           }
       ]
       });
+      logger.info(`Fetched expense for group id - ${groupId} successfully`)
       return expenses;
     } catch (error) {
       throwCustomError(`Failed to fetch expenses for group with id - ${groupId}`, ErrorTypes.BAD_REQUEST, error);

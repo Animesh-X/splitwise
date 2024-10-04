@@ -30,7 +30,7 @@ module.exports = {
       },
       group_id: {
         type: Sequelize.UUID,
-        allowNullL: false,
+        allowNull: false,
         references: {
           model: 'groups',
           key: 'id',

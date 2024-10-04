@@ -5,7 +5,7 @@ const createApolloGraphqlServer = require('./src/graphql/index');
 const config = require("./src/utils/config");
 const logger = require("./src/utils/logger");
 const UserService = require("./src/services/user");
-// Dataflow diagram
+
 
 const init = async () => {
     const app = express();

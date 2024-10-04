@@ -68,10 +68,12 @@ class ExpenseService {
     }
 
     static async mapUsersToExpense (expense) {
+        
         const transactions = await db.ExpenseItem.findAll({
             where: { expenseId: expense.id },
             include: [db.User]
         });
+        
         return transactions;
     }
 

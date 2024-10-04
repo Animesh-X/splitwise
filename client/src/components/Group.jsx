@@ -10,11 +10,13 @@ import { CREATE_EXPENSE } from '../graphql/mutations/createExpense';
 
 export default function Group() {
   const { groupId } = useParams();
+  
   const user = useLoaderData();
   const { data: groupDataResult, loading: groupLoading, error: groupError } = useQuery(GET_GROUP, { variables: { groupId } });
   const [getFriends, { data: friendDataResult, loading: friendLoading, error: friendError }] = useLazyQuery(GET_FRIENDS);
   const [addMemberToGroup] = useMutation(ADD_MEMBER_TO_GROUP);
   const [createExpense] = useMutation(CREATE_EXPENSE);
+  
 
   const [errorMessage, setErrorMessage] = useState('');
   const [selectedFriendId, setSelectedFriendId] = useState('');
@@ -100,12 +102,19 @@ export default function Group() {
     }
   };
   
-
+  console.log(groupError);
+  console.log(friendError);
+  console.log(friendDataResult);
+  
+  
   if (groupLoading || friendLoading) return <p>Loading...</p>;
   if (groupError) return <p>Error: {groupError.message}</p>;
   if (friendError) return <p>Error: {friendError.message}</p>;
 
   const group = groupDataResult.getGroup;
+  console.log(group);
+  
+  
 
   return (
     <div >

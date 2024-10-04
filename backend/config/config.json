@@ -1,21 +1,21 @@
 {
   "development": {
     "username": "root",
-    "password": "root",
+    "password": "Animesh@2022",
     "database": "splitwise",
     "host": "localhost",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
-    "password": "root",
+    "password": "Animesh@2022",
     "database": "splitwise",
     "host": "localhost",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
-    "password": "root",
+    "password": "Animesh@2022",
     "database": "splitwise",
     "host": "localhost",
     "dialect": "mysql"

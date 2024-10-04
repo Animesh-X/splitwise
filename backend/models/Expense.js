@@ -23,7 +23,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       get() {
         const description = this.getDataValue("description");
-        return zlib.inflateSync(Buffer.from(description, "base64")).toString();
+        if (description) {
+          return zlib.inflateSync(Buffer.from(description, "base64")).toString();
+        }
+        return null;
       }
     },
     groupId: {

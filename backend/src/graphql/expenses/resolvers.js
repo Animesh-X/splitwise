@@ -1,4 +1,5 @@
 const ExpenseService = require("../../services/expense");
+const { ErrorTypes, throwCustomError } = require("../../utils/error");
 
 const expense = {
     transactions: async (parent) => {
