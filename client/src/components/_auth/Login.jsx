@@ -2,21 +2,7 @@ import { useState } from "react";
 import { gql, useMutation } from '@apollo/client';
 import { useNavigate } from "react-router-dom";
 import LoginNavBar from "../LoginNavBar";
-
-const LOGIN = gql`
-  mutation Login($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      token
-      user {
-        id
-        firstName
-        lastName
-        email
-        profileImageURL
-      }
-    }
-  }
-`;
+import { LOGIN } from "../../graphql/mutations/login";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -37,7 +23,6 @@ export default function Login() {
     try {
       const response = await login({ variables: { email, password } });
       if(response.data){
-        console.log(response.data.login);
         localStorage.setItem("splitwiseUser", JSON.stringify(response.data.login));
         navigate("/dashboard", {replace: true});
       }

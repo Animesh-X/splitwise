@@ -1,13 +1,16 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useApolloClient } from "@apollo/client";
 
 export default function NavBar() {
   const user = useLoaderData();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
+  const client = useApolloClient();
 
   const handleLogout = () => {
     localStorage.removeItem("splitwiseUser");
+    client.resetStore();
     navigate("/login");
   };
 

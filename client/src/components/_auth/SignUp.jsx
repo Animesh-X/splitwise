@@ -1,15 +1,8 @@
 import { useState } from "react";
 import { gql, useMutation } from '@apollo/client';
 import LoginNavBar from "../LoginNavBar";
-
-const SIGNUP = gql`
-    mutation signup($firstName: String!,$lastName: String, $email: String!, $password: String!) {
-        createUser(firstName: $firstName,lastName: $lastName, email: $email, password: $password) {
-            id,
-            email
-        }
-    }
-`
+import { useNavigate } from "react-router-dom";
+import { SIGNUP } from "../../graphql/mutations/signup";
 
 export default function SignUp() {
     const [email, setEmail] = useState("");
@@ -17,6 +10,7 @@ export default function SignUp() {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [createUser, {data, loading, error}] = useMutation(SIGNUP);
+    const navigate = useNavigate();
 
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
@@ -38,6 +32,8 @@ export default function SignUp() {
         event.preventDefault();
         try {
             const response = await createUser({ variables: {firstName, lastName, email, password}});
+            window.alert("Signup successful! Redirecting to login.");
+            navigate("/login");
             console.log(response);
         } catch (error) {
             console.error(error);

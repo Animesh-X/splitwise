@@ -98,23 +98,15 @@ export default function Group() {
       setShowAddExpenseForm(false);
     } catch (error) {
       console.error("Error creating expense:", error);
-      alert(`Error adding expense - `)
+      alert(`Error adding expense`)
     }
   };
-  
-  console.log(groupError);
-  console.log(friendError);
-  console.log(friendDataResult);
-  
   
   if (groupLoading || friendLoading) return <p>Loading...</p>;
   if (groupError) return <p>Error: {groupError.message}</p>;
   if (friendError) return <p>Error: {friendError.message}</p>;
 
   const group = groupDataResult.getGroup;
-  console.log(group);
-  
-  
 
   return (
     <div >
